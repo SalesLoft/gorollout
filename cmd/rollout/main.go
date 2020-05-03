@@ -18,8 +18,8 @@ import (
 
 var (
 	app = &cli.App{
-		Name:  "Deals Feature Flags",
-		Usage: "manage feature flags in SalesLoft Deals.",
+		Name:  "rollout",
+		Usage: "Fast and concurrent-safe feature flags for golang based on Redis.",
 
 		Flags: []cli.Flag{
 			&cli.StringFlag{
@@ -29,8 +29,8 @@ var (
 			},
 			&cli.StringFlag{
 				Name:  "prefix",
-				Usage: "Key prefix for Deals feature flags",
-				Value: "dealsff",
+				Usage: "Key prefix for feature flags",
+				Value: "rollout",
 			},
 		},
 
