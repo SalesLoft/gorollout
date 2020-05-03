@@ -10,7 +10,7 @@ go get github.com/salesloft/gorollout/cmd/rollout
 
 ### Help
 
-```bash
+```
 ~  rollout help
 NAME:
    rollout - Fast and concurrent-safe feature flags for golang based on Redis.
@@ -36,7 +36,7 @@ GLOBAL OPTIONS:
 
 ### Example Usage
 
-```bash
+```
 ~  rollout activate apples
 ~  rollout activate-team bananas 99
 ~  rollout activate-percentage cherries 25
