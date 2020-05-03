@@ -9,7 +9,7 @@ Fast and concurrent-safe feature flags for golang based on Redis. Inspired by th
 ## Installation
 
 ```bash
-go get -u github.com/salesloft/gorollout
+go get github.com/salesloft/gorollout
 ```
 
 ## Usage
@@ -28,8 +28,8 @@ var (
 )
 
 func main() {
-    // instantiate a feature manager
-    manager := rollout.NewManager(redis.NewClient(&redis.Options{}))
+    // instantiate a feature manager with a redis client and namespace prefix
+    manager := rollout.NewManager(redis.NewClient(&redis.Options{}), "rollout")
 
     // activate a feature
     manager.Activate(apples)
@@ -53,3 +53,7 @@ func main() {
     manager.IsActiveMulti(apples, bananas)
 }
 ```
+
+## Command Line Interface (CLI)
+
+gorollout also includes a [command line interface](cmd/rollout/README.md) for viewing and managing feature flags.
