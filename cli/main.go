@@ -10,8 +10,8 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	rollout "github.com/SalesLoft/gorollout"
 	"github.com/go-redis/redis/v7"
+	rollout "github.com/salesloft/gorollout"
 	"github.com/urfave/cli/v2"
 	"github.com/vmihailenco/msgpack/v4"
 )
