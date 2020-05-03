@@ -41,9 +41,9 @@ var (
 				Action: listFeatureFlags,
 			},
 			{
-				Name:      "rollout",
+				Name:      "activate-percentage",
 				Usage:     "Rollout a feature flag the given percentage",
-				Action:    rolloutFeatureFlag,
+				Action:    activatePercentageFeatureFlag,
 				ArgsUsage: "[feature name] [percentage]",
 			},
 			{
@@ -163,7 +163,7 @@ func listFeatureFlags(c *cli.Context) error {
 	return nil
 }
 
-func rolloutFeatureFlag(c *cli.Context) error {
+func activatePercentageFeatureFlag(c *cli.Context) error {
 	ff := rollout.NewFeature(c.Args().Get(0))
 	if ff.Name() == "" {
 		return cli.NewExitError("Missing required feature flag name", 1)
