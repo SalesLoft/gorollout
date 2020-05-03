@@ -8,7 +8,7 @@ A command line interface for viewing and managing features.
 go get github.com/salesloft/gorollout/cmd/rollout
 ```
 
-### Usage
+### Help
 
 ```bash
 ~  rollout help
@@ -33,6 +33,8 @@ GLOBAL OPTIONS:
    --prefix value  Key prefix for feature flags (default: "rollout")
    --help, -h      show help (default: false)
 ```
+
+### Example Usage
 
 ```bash
 ~  rollout activate apples
