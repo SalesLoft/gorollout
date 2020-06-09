@@ -5,7 +5,7 @@ A command line interface for viewing and managing features.
 ## Installation
 
 ```bash
-go get github.com/salesloft/gorollout/cmd/rollout
+GO111MODULE=on go get github.com/salesloft/gorollout/cmd/rollout
 ```
 
 ### Help
