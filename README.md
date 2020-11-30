@@ -2,7 +2,7 @@
 Fast and concurrent-safe feature flags for golang based on Redis. Inspired by the [ruby rollout gem](https://github.com/fetlife/rollout).
 
 [![](https://godoc.org/github.com/salesloft/gorollout?status.svg)](http://godoc.org/github.com/salesloft/gorollout)
-[![Build Status](https://travis-ci.org/salesloft/gorollout.svg?branch=master)](https://travis-ci.org/salesloft/gorollout)
+[![Build Status](https://github.com/SalesLoft/gorollout/workflows/Go/badge.svg)](https://github.com/SalesLoft/gorollout/actions)
 [![Code Coverage](https://codecov.io/gh/salesloft/gorollout/branch/master/graph/badge.svg)](https://codecov.io/gh/salesloft/gorollout)
 [![Go Report Card](https://goreportcard.com/badge/github.com/salesloft/gorollout)](https://goreportcard.com/report/github.com/salesloft/gorollout)
 
