@@ -33,9 +33,9 @@ func TestEncodeDecode(t *testing.T) {
 	assert.EqualValues(t, in.Name(), out.Name())
 	assert.EqualValues(t, in.percentage, out.percentage)
 	assert.EqualValues(t, in.teamIDs, out.teamIDs)
-	assert.True(t, out.isTeamActive(1))
-	assert.True(t, out.isTeamActive(2))
-	assert.True(t, out.isTeamActive(3))
+	assert.True(t, out.isTeamActive(1, false))
+	assert.True(t, out.isTeamActive(2, false))
+	assert.True(t, out.isTeamActive(3, false))
 
 	// encode just percentage
 	in = NewFeature("example")
@@ -69,39 +69,39 @@ func TestEncodeDecode(t *testing.T) {
 	assert.EqualValues(t, in.percentage, out.percentage)
 	assert.EqualValues(t, in.teamIDs, out.teamIDs)
 
-	assert.True(t, out.isTeamActive(1))
-	assert.True(t, out.isTeamActive(2))
-	assert.True(t, out.isTeamActive(3))
+	assert.True(t, out.isTeamActive(1, false))
+	assert.True(t, out.isTeamActive(2, false))
+	assert.True(t, out.isTeamActive(3, false))
 }
 
 func TestEnableDisableTeam(t *testing.T) {
 	f := NewFeature("example")
-	assert.False(t, f.isTeamActive(1))
+	assert.False(t, f.isTeamActive(1, false))
 
 	f.activateTeam(1)
 	f.activateTeam(2)
 
-	assert.True(t, f.isTeamActive(1))
-	assert.True(t, f.isTeamActive(2))
-	assert.False(t, f.isTeamActive(3))
+	assert.True(t, f.isTeamActive(1, false))
+	assert.True(t, f.isTeamActive(2, false))
+	assert.False(t, f.isTeamActive(3, false))
 
 	f.deactivateTeam(1)
 
-	assert.False(t, f.isTeamActive(1))
-	assert.True(t, f.isTeamActive(2))
+	assert.False(t, f.isTeamActive(1, false))
+	assert.True(t, f.isTeamActive(2, false))
 }
 
 func TestEnableDisableFeature(t *testing.T) {
 	f := NewFeature("example")
-	assert.False(t, f.isTeamActive(1))
+	assert.False(t, f.isTeamActive(1, false))
 
 	f.activate()
-	assert.True(t, f.isTeamActive(1))
-	assert.True(t, f.isTeamActive(999999999999))
+	assert.True(t, f.isTeamActive(1, false))
+	assert.True(t, f.isTeamActive(999999999999, false))
 
 	f.deactivate()
-	assert.False(t, f.isTeamActive(1))
-	assert.False(t, f.isTeamActive(99999999999))
+	assert.False(t, f.isTeamActive(1, false))
+	assert.False(t, f.isTeamActive(99999999999, false))
 }
 
 func TestRollout(t *testing.T) {
@@ -111,33 +111,33 @@ func TestRollout(t *testing.T) {
 	// 25% < Team 2 < 50%
 	// 0 % < Team 3 < 25%
 
-	assert.False(t, f.isTeamActive(1))
-	assert.False(t, f.isTeamActive(2))
-	assert.False(t, f.isTeamActive(3))
+	assert.False(t, f.isTeamActive(1, true))
+	assert.False(t, f.isTeamActive(2, true))
+	assert.False(t, f.isTeamActive(3, true))
 
 	f.activatePercentage(25)
 
-	assert.False(t, f.isTeamActive(1))
-	assert.False(t, f.isTeamActive(2))
-	assert.True(t, f.isTeamActive(3))
+	assert.False(t, f.isTeamActive(1, true))
+	assert.False(t, f.isTeamActive(2, true))
+	assert.True(t, f.isTeamActive(3, true))
 
 	f.activatePercentage(50)
 
-	assert.False(t, f.isTeamActive(1))
-	assert.True(t, f.isTeamActive(2))
-	assert.True(t, f.isTeamActive(3))
+	assert.False(t, f.isTeamActive(1, true))
+	assert.True(t, f.isTeamActive(2, true))
+	assert.True(t, f.isTeamActive(3, true))
 
 	f.activatePercentage(75)
 
-	assert.False(t, f.isTeamActive(1))
-	assert.True(t, f.isTeamActive(2))
-	assert.True(t, f.isTeamActive(3))
+	assert.False(t, f.isTeamActive(1, true))
+	assert.True(t, f.isTeamActive(2, true))
+	assert.True(t, f.isTeamActive(3, true))
 
 	f.activatePercentage(100)
 
-	assert.True(t, f.isTeamActive(1))
-	assert.True(t, f.isTeamActive(2))
-	assert.True(t, f.isTeamActive(3))
+	assert.True(t, f.isTeamActive(1, true))
+	assert.True(t, f.isTeamActive(2, true))
+	assert.True(t, f.isTeamActive(3, true))
 }
 
 func TestRolloutactivateTeamMix(t *testing.T) {
@@ -147,14 +147,25 @@ func TestRolloutactivateTeamMix(t *testing.T) {
 	// 25% < Team 2 < 50%
 	// 0 % < Team 3 < 25%
 
-	assert.False(t, f.isTeamActive(1))
-	assert.False(t, f.isTeamActive(2))
-	assert.False(t, f.isTeamActive(3))
+	assert.False(t, f.isTeamActive(1, true))
+	assert.False(t, f.isTeamActive(2, true))
+	assert.False(t, f.isTeamActive(3, true))
 
 	f.activateTeam(1)
 	f.activatePercentage(25)
 
-	assert.True(t, f.isTeamActive(1))
-	assert.False(t, f.isTeamActive(2))
-	assert.True(t, f.isTeamActive(3))
+	assert.True(t, f.isTeamActive(1, true))
+	assert.False(t, f.isTeamActive(2, true))
+	assert.True(t, f.isTeamActive(3, true))
+}
+
+func TestRandomizePercentage(t *testing.T) {
+	f := NewFeature("example")
+	f.activatePercentage(50)
+
+	// teamID == 10 will be active at 50% when randomized, but not when static
+	teamID := int64(10)
+
+	assert.True(t, f.isTeamActive(teamID, true))
+	assert.False(t, f.isTeamActive(teamID, false))
 }

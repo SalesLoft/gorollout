@@ -100,13 +100,13 @@ func (c *MockClient) Set(key string, value interface{}, expiration time.Duration
 }
 
 func TestNewManager(t *testing.T) {
-	manager := NewManager(&MockClient{}, mockKeyPrefix)
+	manager := NewManager(&MockClient{}, mockKeyPrefix, false)
 	assert.NotNil(t, manager)
 }
 
 func TestGet(t *testing.T) {
 	client := &MockClient{}
-	manager := NewManager(client, mockKeyPrefix)
+	manager := NewManager(client, mockKeyPrefix, false)
 
 	client.feature = Feature{
 		name:       "example",
@@ -124,7 +124,7 @@ func TestGet(t *testing.T) {
 
 func TestActivate(t *testing.T) {
 	client := &MockClient{}
-	manager := NewManager(client, mockKeyPrefix)
+	manager := NewManager(client, mockKeyPrefix, false)
 
 	f := NewFeature("example")
 
@@ -145,7 +145,7 @@ func TestActivate(t *testing.T) {
 
 func TestDeactivate(t *testing.T) {
 	client := &MockClient{}
-	manager := NewManager(client, mockKeyPrefix)
+	manager := NewManager(client, mockKeyPrefix, false)
 
 	f := NewFeature("example")
 	f.activate()
@@ -171,7 +171,7 @@ func TestActivatePercentage(t *testing.T) {
 	// 0 % < Team 3 < 25%
 
 	client := &MockClient{}
-	manager := NewManager(client, mockKeyPrefix)
+	manager := NewManager(client, mockKeyPrefix, true)
 
 	f := NewFeature("example")
 
@@ -179,9 +179,9 @@ func TestActivatePercentage(t *testing.T) {
 	err := manager.ActivatePercentage(f, 25)
 	assert.NoError(t, err)
 
-	assert.False(t, f.isTeamActive(1))
-	assert.False(t, f.isTeamActive(2))
-	assert.True(t, f.isTeamActive(3))
+	assert.False(t, f.isTeamActive(1, manager.randomizePercentage))
+	assert.False(t, f.isTeamActive(2, manager.randomizePercentage))
+	assert.True(t, f.isTeamActive(3, manager.randomizePercentage))
 	assert.True(t, client.setWasCalled)
 	assert.Equal(t, mockKeyPrefix+":example", client.setKey)
 
@@ -190,9 +190,9 @@ func TestActivatePercentage(t *testing.T) {
 	err = manager.ActivatePercentage(f, 50)
 	assert.NoError(t, err)
 
-	assert.False(t, f.isTeamActive(1))
-	assert.True(t, f.isTeamActive(2))
-	assert.True(t, f.isTeamActive(3))
+	assert.False(t, f.isTeamActive(1, manager.randomizePercentage))
+	assert.True(t, f.isTeamActive(2, manager.randomizePercentage))
+	assert.True(t, f.isTeamActive(3, manager.randomizePercentage))
 	assert.True(t, client.setWasCalled)
 	assert.Equal(t, mockKeyPrefix+":example", client.setKey)
 
@@ -205,7 +205,7 @@ func TestActivatePercentage(t *testing.T) {
 
 func TestIsActive(t *testing.T) {
 	client := &MockClient{}
-	manager := NewManager(client, mockKeyPrefix)
+	manager := NewManager(client, mockKeyPrefix, false)
 
 	f := NewFeature("example")
 
@@ -241,7 +241,7 @@ func TestIsActive(t *testing.T) {
 
 func TestIsActiveMulti(t *testing.T) {
 	client := &MockClient{}
-	manager := NewManager(client, mockKeyPrefix)
+	manager := NewManager(client, mockKeyPrefix, false)
 
 	features := []*Feature{
 		NewFeature("example1"),
@@ -293,7 +293,7 @@ func TestIsActiveMulti(t *testing.T) {
 
 func TestActivateTeam(t *testing.T) {
 	client := &MockClient{}
-	manager := NewManager(client, mockKeyPrefix)
+	manager := NewManager(client, mockKeyPrefix, false)
 
 	f := NewFeature("example")
 
@@ -301,7 +301,7 @@ func TestActivateTeam(t *testing.T) {
 	err := manager.ActivateTeam(1, f)
 	assert.NoError(t, err)
 
-	assert.True(t, f.isTeamActive(1))
+	assert.True(t, f.isTeamActive(1, manager.randomizePercentage))
 	assert.True(t, client.setWasCalled)
 	assert.Equal(t, mockKeyPrefix+":example", client.setKey)
 
@@ -314,7 +314,7 @@ func TestActivateTeam(t *testing.T) {
 
 func TestDeactivateTeam(t *testing.T) {
 	client := &MockClient{}
-	manager := NewManager(client, mockKeyPrefix)
+	manager := NewManager(client, mockKeyPrefix, false)
 
 	f := NewFeature("example")
 	f.activateTeam(1)
@@ -323,7 +323,7 @@ func TestDeactivateTeam(t *testing.T) {
 	err := manager.DeactivateTeam(1, f)
 	assert.NoError(t, err)
 
-	assert.False(t, f.isTeamActive(1))
+	assert.False(t, f.isTeamActive(1, manager.randomizePercentage))
 	assert.True(t, client.setWasCalled)
 	assert.Equal(t, mockKeyPrefix+":example", client.setKey)
 
@@ -336,7 +336,7 @@ func TestDeactivateTeam(t *testing.T) {
 
 func TestIsTeamActive(t *testing.T) {
 	client := &MockClient{}
-	manager := NewManager(client, mockKeyPrefix)
+	manager := NewManager(client, mockKeyPrefix, false)
 
 	f := NewFeature("example")
 
@@ -389,7 +389,7 @@ func TestIsTeamActive(t *testing.T) {
 
 func TestIsTeamActiveMulti(t *testing.T) {
 	client := &MockClient{}
-	manager := NewManager(client, mockKeyPrefix)
+	manager := NewManager(client, mockKeyPrefix, false)
 
 	features := []*Feature{
 		NewFeature("example1"),
@@ -442,7 +442,7 @@ func TestIsTeamActiveMulti(t *testing.T) {
 func TestFeatureDifferentThanServer(t *testing.T) {
 	// mock a scenario where the state of the database is different than the feature variable
 	client := &MockClient{}
-	manager := NewManager(client, mockKeyPrefix)
+	manager := NewManager(client, mockKeyPrefix, false)
 
 	client.feature = Feature{
 		name:       "example",

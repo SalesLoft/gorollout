@@ -9,17 +9,19 @@ import (
 
 // Manager persists and fetches feature toggles to/from redis
 type Manager struct {
-	client    redis.Cmdable
-	keyPrefix string
+	client              redis.Cmdable
+	keyPrefix           string
+	randomizePercentage bool
 }
 
 // NewManager constructs a new Manager instance
-func NewManager(client redis.Cmdable, keyPrefix string) *Manager {
+func NewManager(client redis.Cmdable, keyPrefix string, randomizePercentage bool) *Manager {
 	// nothing is retrieved from redis at this point
 	// everything is fetched on demand
 	return &Manager{
-		client:    client,
-		keyPrefix: keyPrefix,
+		client:              client,
+		keyPrefix:           keyPrefix,
+		randomizePercentage: randomizePercentage,
 	}
 }
 
@@ -242,7 +244,7 @@ func (m *Manager) IsTeamActive(teamID int64, feature *Feature) (bool, error) {
 		return false, err
 	}
 
-	return feature.isTeamActive(teamID), nil
+	return feature.isTeamActive(teamID, m.randomizePercentage), nil
 }
 
 // IsTeamActiveMulti returns whether the given features are globally active
@@ -279,7 +281,7 @@ func (m *Manager) IsTeamActiveMulti(teamID int64, features ...*Feature) ([]bool,
 			if err := msgpack.Unmarshal([]byte(t), features[i]); err != nil {
 				return nil, err
 			}
-			results[i] = features[i].isTeamActive(teamID)
+			results[i] = features[i].isTeamActive(teamID, m.randomizePercentage)
 
 		default:
 			return nil, fmt.Errorf("unexpected type (%T) for msgpack value: %v", v, v)

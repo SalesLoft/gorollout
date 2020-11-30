@@ -46,8 +46,8 @@ func main() {
     // check if a feature is active, globally
     manager.IsActive(apples)
 
-    // check if a feature is active for a specific team
-    manager.IsTeamActive(99, apples)
+    // check if a feature is active for a specific team (randomize percentage disabled)
+    manager.IsTeamActive(99, apples, false)
 
     // check multiple feature flags at once
     manager.IsActiveMulti(apples, bananas)
