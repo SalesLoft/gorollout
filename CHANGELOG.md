@@ -2,4 +2,12 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).  
 
-Every release, along with the migration instructions, is documented on the Github [Releases page](https://github.com/SalesLoft/open-source-template/releases).
+Every release, along with the migration instructions, is documented on the Github [Releases page](https://github.com/SalesLoft/gorollout/releases).
+
+### v1.1.0
+
+Added support for controlling the randomizing percentage between feature flags. Setting to false will ensure that features are active for the same teams when rolled out the same percentage.
+
+### v1.0.0
+
+Initial release of library. Feature complete and ready for production use.

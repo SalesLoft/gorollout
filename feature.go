@@ -71,12 +71,18 @@ func (f *Feature) deactivateTeam(teamID int64) {
 	delete(f.teamIDs, teamID)
 }
 
-func (f *Feature) isTeamActive(teamID int64) bool {
+func (f *Feature) isTeamActive(teamID int64, randomizePercentage bool) bool {
 	if f.percentage == 100 {
+		// feature is globally active
 		return true
-	} else if crc32.ChecksumIEEE([]byte(f.name+strconv.FormatInt(teamID, 10))) < randBase*uint32(f.percentage) {
+	} else if randomizePercentage && crc32.ChecksumIEEE([]byte(f.name+strconv.FormatInt(teamID, 10))) < randBase*uint32(f.percentage) {
+		// include the feature name in the checksum when randomizing percentage
+		return true
+	} else if !randomizePercentage && crc32.ChecksumIEEE([]byte(strconv.FormatInt(teamID, 10))) < randBase*uint32(f.percentage) {
+		// only use the team id for the checksum when not randomizing the percentage
 		return true
 	} else if _, active := f.teamIDs[teamID]; active {
+		// check if the team is explicitly active
 		return true
 	}
 

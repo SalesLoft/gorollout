@@ -186,6 +186,7 @@ func activatePercentageFeatureFlag(c *cli.Context) error {
 			},
 		),
 		c.String("prefix"),
+		false,
 	)
 
 	return manager.ActivatePercentage(ff, uint8(percentage))
@@ -204,6 +205,7 @@ func activateFeatureFlag(c *cli.Context) error {
 			},
 		),
 		c.String("prefix"),
+		false,
 	)
 
 	return manager.Activate(ff)
@@ -222,6 +224,7 @@ func deactivateFeatureFlag(c *cli.Context) error {
 			},
 		),
 		c.String("prefix"),
+		false,
 	)
 
 	return manager.Deactivate(ff)
@@ -250,6 +253,7 @@ func activateTeamFeatureFlag(c *cli.Context) error {
 			},
 		),
 		c.String("prefix"),
+		false,
 	)
 
 	return manager.ActivateTeam(teamID, ff)
@@ -278,6 +282,7 @@ func deactivateTeamFeatureFlag(c *cli.Context) error {
 			},
 		),
 		c.String("prefix"),
+		false,
 	)
 
 	return manager.DeactivateTeam(teamID, ff)
