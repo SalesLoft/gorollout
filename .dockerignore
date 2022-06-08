@@ -1,0 +1,8 @@
+# ignore everything
+**
+
+# include src content
+!go.mod
+!go.sum
+!*.go
+!cmd
