@@ -57,3 +57,8 @@ func main() {
 ## Command Line Interface (CLI)
 
 gorollout also includes a [command line interface](cmd/rollout/README.md) for viewing and managing feature flags.
+
+## Building and pushing the Docker image
+
+    docker buildx create --use
+    docker buildx build --platform linux/amd64,linux/arm64/v8 -t salesloft/gorollout:v1.1.2 . --push
