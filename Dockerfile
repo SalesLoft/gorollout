@@ -16,4 +16,4 @@ RUN CGO_ENABLED=0 go build -o /rollout ./cmd/rollout/main.go
 FROM scratch
 
 COPY --from=build /rollout /rollout
-CMD [ "/rollout" ]
+ENTRYPOINT [ "/rollout" ]
