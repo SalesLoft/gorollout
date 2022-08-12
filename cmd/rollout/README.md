@@ -10,6 +10,8 @@ GO111MODULE=on GOPROXY=direct GOSUMDB=off go get github.com/salesloft/gorollout/
 
 ## Build Executable
 
+Add the generated executables to the release.
+
 ```
 env GOOS=darwin GOARCH=amd64 go build -o rollout-darwin-amd64
 env GOOS=linux GOARCH=amd64 go build -o rollout-linux-amd64
