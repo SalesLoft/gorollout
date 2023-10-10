@@ -2,25 +2,26 @@ name: Go
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
 jobs:
-
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
 
     - name: Set up Go 1.x
-      uses: actions/setup-go@v2
+      uses: actions/setup-go@v4
       with:
-        go-version: ^1.13
+        go-version: 1.21.3
       id: go
 
     - name: Check out code into the Go module directory
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Get dependencies
       run: |
@@ -30,4 +31,18 @@ jobs:
       run: go test -race -coverprofile=coverage.txt -covermode=atomic
 
     - name: Upload CodeCov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v3
+
+  go-sec:
+    name: Run Gosec
+    runs-on: ubuntu-20.04
+    env:
+      GO111MODULE: on
+
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+      - name: Run Gosec Security Scanner
+        uses: securego/gosec@master
+        with:
+          args: ./...
