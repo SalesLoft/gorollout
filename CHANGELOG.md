@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Every release, along with the migration instructions, is documented on the Github [Releases page](https://github.com/SalesLoft/gorollout/releases).
 
+### v1.1.3
+
+Security updates and updated golang to v1.21.3
+
 ### v1.1.2
 
 Added Dockerfile
